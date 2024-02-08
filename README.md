@@ -26,5 +26,5 @@ if __name__ == '__main__':
 
     # Sort issues by status
     issues_by_status = jira_client.sortByStatus(raw_issues)
-    printIssues(issues_by_status)
+    jira_client.printIssues(issues_by_status)
 ```

@@ -29,11 +29,11 @@ class JiraClient:
             issues_by_status[status].append(issue)
         return issues_by_status   
 
-def printIssues(issues_by_status):
-    for status, issues in issues_by_status.items():
-        print(f'\nStatus: {status} ({len(issues)} issues)')
-        for issue in issues:
-            key = issue['key']
-            summary = issue['fields']['summary']
-            print(f' {key}: {summary}')
+    def printIssues(self, issues_by_status):
+        for status, issues in issues_by_status.items():
+            print(f'\nStatus: {status} ({len(issues)} issues)')
+            for issue in issues:
+                key = issue['key']
+                summary = issue['fields']['summary']
+                print(f' {key}: {summary}')
 
