@@ -4,30 +4,38 @@ import os
 class JsonConfig:
     
     def __init__(self, file_path = 'config.json'):
-        self.config = self.getConfig(file_path)
+        self.file_path = file_path
+        self.config = self.load_config()
 
-    def getConfig(self, file_path):
-        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
-            with open(file_path, 'r') as config_file:
-                config = json.load(config_file)
+    def load_config(self):
+        if os.path.exists(self.file_path) and os.path.getsize(self.file_path) > 0:
+            try:
+                with open(self.file_path, 'r') as config_file:
+                    config = json.load(config_file)
+            except json.JSONDecodeError:
+                print("config file is not valid json")
+                return {}
         else:
-            print("no config file found - prompting for setup")
-            email = input("jira email: ")
-            domain = input("jira domain (example.atlassian.net): ")
-            api_token_path = input("path to your api token: ")
-            project = input("jira project key: ")
-            
-            config = {
-                'email': email,
-                'domain': domain,
-                'api_token_path': api_token_path,
-                'project': project
-            }
-            with open(file_path, 'w') as config_file:
-                json.dump(config, config_file, indent = 4)
-        config['email'] = config.get('email')
-        config['domain'] = config.get('domain')
-        config['base_query'] = 'project = ' + config.get('project')
-        with open(config.get('api_token_path'), 'r') as file:
-            config['api_token'] = file.read().strip()
+            print("no config file found - prompting for data")
+            config = self.prompt_for_config()
+        self.update_config(config)
         return config
+    
+    def prompt_for_config(self):
+        config = {
+            'email': input("jira email: "),
+            'domain': input("jira domain (example.atlassian.net): "),
+            'api_token_path': input("path to your jira API token: "),
+            'project': input("jira project key")
+        }
+        with open(self.file_path, 'w') as config_file:
+            json.dump(config, config_file, indent=4)
+        return config
+    
+    def update_config(self, config):
+        config['base_query'] = f"project = {config.get('project')}"
+        try:
+            with open(config['api_token_path'], 'r') as file:
+                config['api_token'] = file.read().strip()
+        except FileNotFoundError:
+            print(f"API token file {config['api_token_path']} not found")

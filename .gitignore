@@ -2,3 +2,4 @@ JiraAPIKey
 __pycache__
 */__pycache__
 config.json
+api_token
