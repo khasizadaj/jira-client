@@ -3,29 +3,26 @@
 _work in progress - fetch and sort issue status infos from jira project_
 
 ## Usage:
+
+### Example
 ```python
+from jira_client import JiraClient, readConfig
 
-from jira_client import JiraClient
-
-if __name__ == '__main__':
-    email = 'your-email@domain.com'
-    domain = 'https://your-jira-domain.atlassian.net'
-    token_path = 'path/to/your/token'
-    try:
-        with open(token_path, 'r') as file:
-            api_token = file.read().strip()
-    except FileNotFoundError:
-        print(f"Could not find file {token_path}.")
-        exit(1)
-
-    # Create an instance of the JiraClient
+def main():
+    email = 'you@domain.com'
+    domain = 'jira-domain.atlassian.net'
+    with open('path/to/your/api-token', 'r')as file:
+        api_token = file.read().strip()
     jira_client = JiraClient(email, api_token, domain)
-
-    # Define the JQL Query and fetch corresponding issues
-    jql_query = 'project = <your-project-name> AND status in ("To Do", "In Progress", "Done")'
-    raw_issues = jira_client.searchIssues(jql_query)
-
-    # Sort issues by status
-    issues_by_status = jira_client.sortByStatus(raw_issues)
-    jira_client.printIssues(issues_by_status)
+    args = jira_client.parseArguments()
+    base_jql_query = 'project = <your-project-name>'
+    raw_issues = jira_client.searchIssues(base_jql_query, status = args.status, duedate = args.duedate)
+    if raw_issues != None:
+        issues_by_status = jira_client.sortByStatus(raw_issues)
+        jira_client.printIssues(issues_by_status)
+    else:
+        print("No issues found.")
+    
+if __name__ == '__main__':
+    main()
 ```

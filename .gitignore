@@ -1,4 +1,4 @@
-main.py
 JiraAPIKey
 .gitignore
 __pycache__
+config.json
