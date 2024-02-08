@@ -1,10 +1,9 @@
 import requests
+import argparse
 from requests.auth import HTTPBasicAuth
-from colorama import Fore, Style, init
 from datetime import datetime
 
 SUCCESS = 200
-init(autoreset=True)
 
 class JiraClient:
 
@@ -13,9 +12,16 @@ class JiraClient:
         self.headers = { "Accept": "application/json", "Content-Type": "application/json" }
         self.base_url = f'https://{domain}'
         
-    def searchIssues(self, jql_query, max_results = 50, fields = 'key,summary,status,duedate'):
+    def searchIssues(self, jql_query, max_results = 50, fields = 'key,summary,status,duedate', status = None, duedate = None):
+        conditions = [jql_query]
+        if status != None:
+            status_condition = ' OR '.join([f'status="{s}' for s in status])
+            conditions.append(f'({status_condition})')
+        if duedate != None:
+            conditions.append(f'duedate <= "{duedate}"')
+        jql_query_final = ' AND '.join(conditions)
         api_endpoint = '/rest/api/3/search'
-        query = { 'jql': jql_query, 'maxResults': max_results, 'fields': fields }
+        query = { 'jql': jql_query_final, 'maxResults': max_results, 'fields': fields }
         response = requests.get(self.base_url + api_endpoint, headers = self.headers, params = query, auth = self.auth)
         if response.status_code == SUCCESS:
             return response.json()['issues']

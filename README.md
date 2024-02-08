@@ -1,4 +1,4 @@
-# jira-progress-tracker
+# jira-client
 
 _work in progress - fetch and sort issue status infos from jira project_
 
