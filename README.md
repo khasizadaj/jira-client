@@ -1,5 +1,6 @@
 # jira-progress-tracker
 
+_work in progress - fetch and sort issue status infos from jira project_
 
 ## Usage:
 ```python
