@@ -5,7 +5,7 @@ _work in progress - fetch and sort issue status infos from jira project_
 ## Usage:
 ```python
 
-from jira_client import JiraClient, printIssues
+from jira_client import JiraClient
 
 if __name__ == '__main__':
     email = 'your-email@domain.com'

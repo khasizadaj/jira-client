@@ -1,5 +1,4 @@
 import requests
-import argparse
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 
@@ -15,10 +14,10 @@ class JiraClient:
     def searchIssues(self, jql_query, max_results = 50, fields = 'key,summary,status,duedate', status = None, duedate = None):
         conditions = [jql_query]
         if status != None:
-            status_condition = ' OR '.join([f'status="{s}' for s in status])
+            status_condition = ' OR '.join([f'status="{s}"' for s in status])
             conditions.append(f'({status_condition})')
         if duedate != None:
-            conditions.append(f'duedate <= "{duedate}"')
+            conditions.append(f'duedate <= {duedate}')
         jql_query_final = ' AND '.join(conditions)
         api_endpoint = '/rest/api/3/search'
         query = { 'jql': jql_query_final, 'maxResults': max_results, 'fields': fields }
@@ -26,7 +25,7 @@ class JiraClient:
         if response.status_code == SUCCESS:
             return response.json()['issues']
         else:
-            print('Failed to search issues:', response.status_code, response.text)         
+            print('Failed to search issues:', response.status_code, response.text)
 
     def sortByStatus(self, issues):
         issues_by_status = {}
