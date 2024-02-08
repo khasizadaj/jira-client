@@ -12,8 +12,6 @@ class JiraClient:
         self.auth = HTTPBasicAuth(email, api_token)
         self.headers = { "Accept": "application/json", "Content-Type": "application/json" }
         self.base_url = f'https://{domain}'
-
-    def searchIssues(self, jql_query, max_results = 50, fields = 'key,summary,status'):
         
     def searchIssues(self, jql_query, max_results = 50, fields = 'key,summary,status,duedate'):
         api_endpoint = '/rest/api/3/search'
