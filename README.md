@@ -14,6 +14,8 @@ git clone git@github.com:winstonallo/jira-client.git && cd jira-client
 
 ### 2. configurate json file
 
+_if no config.json file is found, you will get prompted for the necessary data_
+
 ```bash
 touch config.json
 ```

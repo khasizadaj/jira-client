@@ -1,7 +1,8 @@
-from jira_client import JiraClient, readConfig
+from jira_client import JiraClient
+from json_config import JsonConfig
 
 def main():
-    config = readConfig()
+    config = JsonConfig().config
     jira_client = JiraClient(config['email'], config['api_token'], config['domain'])
     args = jira_client.parseArguments()
     raw_issues = jira_client.searchIssues(config['base_query'], status = args.status, duedate = args.duedate)

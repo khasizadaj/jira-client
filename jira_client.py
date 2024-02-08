@@ -1,6 +1,5 @@
 import requests
 import argparse
-import json
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 
@@ -59,13 +58,4 @@ class JiraClient:
         parser.add_argument('-d', '--duedate', help = 'Filter issues by due date. Use YYYY-MM-DD format.', required = False)
         return parser.parse_args()
     
-def readConfig():
-    with open('config.json', 'r') as file:
-        config_file = json.load(file)
-    config = {}
-    config['email'] = config_file.get('email')
-    config['domain'] = config_file.get('domain')
-    config['base_query'] = 'project = ' + config_file.get('project')
-    with open(config_file.get('api_token_path'), 'r') as file:
-        config['api_token'] = file.read().strip()
-    return config
+
