@@ -1,5 +1,5 @@
-from jira_client import JiraClient
-from json_config import JsonConfig
+from jira_client.jira_client import JiraClient
+from config.json_config import JsonConfig
 
 def main():
     config = JsonConfig().config
