@@ -7,11 +7,13 @@ SUCCESS = 200
 init(autoreset=True)
 
 class JiraClient:
-    
+
     def __init__(self, email, api_token, domain):
         self.auth = HTTPBasicAuth(email, api_token)
         self.headers = { "Accept": "application/json", "Content-Type": "application/json" }
         self.base_url = f'https://{domain}'
+
+    def searchIssues(self, jql_query, max_results = 50, fields = 'key,summary,status'):
         
     def searchIssues(self, jql_query, max_results = 50, fields = 'key,summary,status,duedate'):
         api_endpoint = '/rest/api/3/search'
@@ -21,7 +23,7 @@ class JiraClient:
             return response.json()['issues']
         else:
             print('Failed to search issues:', response.status_code, response.text)         
-            
+
     def sortByStatus(self, issues):
         issues_by_status = {}
         for issue in issues:
