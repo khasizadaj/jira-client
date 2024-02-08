@@ -2,27 +2,38 @@
 
 _work in progress - fetch and sort issue status infos from jira project_
 
-## Usage:
+## usage
 
-### Example
-```python
-from jira_client import JiraClient, readConfig
 
-def main():
-    email = 'you@domain.com'
-    domain = 'jira-domain.atlassian.net'
-    with open('path/to/your/api-token', 'r')as file:
-        api_token = file.read().strip()
-    jira_client = JiraClient(email, api_token, domain)
-    args = jira_client.parseArguments()
-    base_jql_query = 'project = <your-project-name>'
-    raw_issues = jira_client.searchIssues(base_jql_query, status = args.status, duedate = args.duedate)
-    if raw_issues != None:
-        issues_by_status = jira_client.sortByStatus(raw_issues)
-        jira_client.printIssues(issues_by_status)
-    else:
-        print("No issues found.")
-    
-if __name__ == '__main__':
-    main()
+### 1. clone and cd into repo
+
+
+```bash
+git clone git@github.com:winstonallo/jira-client.git && cd jira-client
+```
+
+### 2. configurate json file
+
+```bash
+touch config.json
+```
+
+```json
+{
+    "email": "you@foo.com",
+    "domain": "your-domain.atlassian.net",
+    "api_token_path": "path/to/your/api-token",
+    "project": "JIRA PROJECT KEY"
+}
+
+```
+
+### 3. run
+```bash
+python3 main.py
+
+options:
+    --help      show this help message
+    --status    issue status(es) to filter by
+    --duedate   filter issues by du date (YYYY-MM-DD)
 ```
