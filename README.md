@@ -2,15 +2,28 @@
 
 _work in progress - fetch and sort issue status infos from jira project_
 
+
 ## usage
 
-
 ### 1. clone and cd into repo
-
 
 ```bash
 git clone git@github.com:winstonallo/jira-client.git && cd jira-client
 ```
+
+### 2. create virtual environment and install requirements
+
+```bash
+# create virtual env.
+python -m venv .venv
+
+# actiavte virtual env.
+source .venv/bin/activate
+
+# install requirements
+pip install -r requirements.txt
+```
+
 
 ### 2. configurate json file
 
@@ -30,9 +43,10 @@ touch config.json
 
 ```
 
+
 ### 3. run
 ```bash
-python3 main.py
+python main.py
 
 options:
     --help      show this help message
