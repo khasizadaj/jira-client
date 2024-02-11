@@ -8,12 +8,14 @@ API_ENDPOINT = '/rest/api/3/search'
 
 class JiraClient:
 
-    def __init__(self, email, api_token, domain):
+    def __init__(self, email: str, api_token: str, domain: str) -> None:
         self.auth = HTTPBasicAuth(email, api_token)
         self.headers = { "Accept": "application/json", "Content-Type": "application/json" }
         self.base_url = f'https://{domain}'
         
-    def search_issues(self, jql_query, max_results = 50, fields='key,summary,status,duedate', status=None, duedate=None):
+    def search_issues(self, jql_query: str, max_results: int = 50,
+                      fields: str = 'key,summary,status,duedate', status: str = None,
+                      duedate: str = None) -> dict:
         conditions = [jql_query]
         if status is not None:
             status_condition = ' OR '.join([f'status="{s}"' for s in status])
@@ -28,7 +30,7 @@ class JiraClient:
         else:
             raise Exception(f'failed to search issues: {response.status_code}, {response.text}')
 
-    def sort_by_status(self, issues):
+    def sort_by_status(self, issues: dict) -> dict:
         issues_by_status = {}
         for issue in issues:
             status = issue['fields']['status']['name']
@@ -39,7 +41,7 @@ class JiraClient:
             issues.sort(key=lambda x: (x['fields'].get('duedate') or '9999-12-31', x['key']))
         return issues_by_status   
 
-    def print_issues(self, issues_by_status):
+    def print_issues(self, issues_by_status: dict) -> None:
         for status, issues in issues_by_status.items():
             print(f'Status: {status} ({len(issues)} issues)\n')
             for issue in issues:

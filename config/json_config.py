@@ -3,7 +3,7 @@ import os
 
 class JsonConfig:
     
-    def __init__(self, file_path = 'config.json'):
+    def __init__(self, file_path: str = 'config.json'):
         self.file_path = file_path
         self.config = self.load_config()
 
@@ -32,7 +32,7 @@ class JsonConfig:
             json.dump(config, config_file, indent=4)
         return config
     
-    def update_config(self, config):
+    def update_config(self, config: dict[str, str]):
         config['base_query'] = f"project = {config.get('project')}"
         try:
             with open(config['api_token_path'], 'r') as file:
